@@ -29,17 +29,16 @@ public class ProductDaoImpl extends BaseDaoImpl<Product> {
 
 	public static void main(String[] args) {
 		ProductDaoImpl productDao = new ProductDaoImpl();
-		System.out.println(productDao.getById(1));
-//		productDao.delete(1);
-		for(Product product:productDao.queryByName("")){
-			System.out.println(product);
-		}
+		System.out.println(productDao.getById(2));
+//		for(Product product:productDao.queryByName("")){
+//			System.out.println(product);
+//		}
 	}
 
 	public Product getById(int id) {
 		Product product = null;
-		String sql = "select * from product where id = ?";
-		product = super.getById(sql,id);
+		String sql = "select id,name,price,remark,date from product where id = ?";
+		product = super.getById(sql,id,Product.class);
 		return product;
 	}
 	// 模糊查询,可能返回多条件记录(具体数量不确定)
@@ -56,7 +55,7 @@ public class ProductDaoImpl extends BaseDaoImpl<Product> {
 		Product product = new Product();
 		product.setId(rs.getInt("id"));
 		product.setName(rs.getString("name"));
-		product.setPrice(rs.getDouble("price"));
+//		product.setPrice(rs.getDouble("price"));
 		product.setRemark(rs.getString("remark"));
 		product.setDate(rs.getDate("date"));
 		return product;

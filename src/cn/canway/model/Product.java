@@ -1,5 +1,6 @@
 package cn.canway.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 // 类-->表   对象-->记录   属性 --> 字段
@@ -9,7 +10,7 @@ public class Product {
 	
 	private String name;
 	
-	private Double price;
+	private BigDecimal price;
 	
 	private String remark;
 	
@@ -27,7 +28,7 @@ public class Product {
 		super();
 	}
 	
-	public Product(Integer id, String name, Double price, String remark) {
+	public Product(Integer id, String name, BigDecimal price, String remark) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -54,10 +55,10 @@ public class Product {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Double getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
-	public void setPrice(Double price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 	public String getRemark() {

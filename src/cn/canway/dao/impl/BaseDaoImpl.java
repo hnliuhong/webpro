@@ -3,14 +3,12 @@ package cn.canway.dao.impl;
 import cn.canway.model.Product;
 import cn.canway.util.JdbcUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.lang.reflect.Field;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
+// 反射(运行时), 框架100% 使用反射增加灵活性
 // 所有访问数据库的公共类
 public abstract class BaseDaoImpl<T> {
 
@@ -44,8 +42,8 @@ public abstract class BaseDaoImpl<T> {
             JdbcUtil.close(rs, state, conn);
         }
     }
-
-    protected T getById(String sql, Object id) {
+    // Object
+    protected T getById(String sql, Object id,Class clazz) {
         T model = null;
         // 1: 获取connection对象
         Connection conn = null;
@@ -60,9 +58,18 @@ public abstract class BaseDaoImpl<T> {
             // 4: 执行SQL并且返回受影响行数,先执行finnally在返回
             rs = state.executeQuery();
             // 5: 从结果集中获取记录,然后转化为Java Model
-            if (rs.next()) {
-                System.out.println(this);
-                model = this.getRow(rs);
+            if (rs.next()) { // 说明有结果集,因此会创建一个对象
+                model = (T)clazz.newInstance();
+                // 获取结果集元数据信息
+                ResultSetMetaData rsmd = rs.getMetaData();
+                for (int i=1;i<=rsmd.getColumnCount();i++){
+                    String colName = rsmd.getColumnName(i);
+                    // 根据列的名称动态获取当前Class文件对应的字段
+                    Field field =clazz.getDeclaredField(colName);
+                    // 属性.set(对象,值)
+                    field.setAccessible(true);
+                    field.set(model,rs.getObject(colName));
+                }
             }
             return model;
         } catch (Exception e) {
