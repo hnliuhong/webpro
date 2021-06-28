@@ -26,6 +26,7 @@ public class Product {
 
 	public Product() {
 		super();
+		System.out.println("Product()......");
 	}
 	
 	public Product(Integer id, String name, BigDecimal price, String remark) {
@@ -58,7 +59,7 @@ public class Product {
 	public BigDecimal getPrice() {
 		return price;
 	}
-	public void setPrice(BigDecimal price) {
+	public void setPriceA(BigDecimal price) {
 		this.price = price;
 	}
 	public String getRemark() {

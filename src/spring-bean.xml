@@ -4,5 +4,24 @@
        xsi:schemaLocation="
 http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+    <!-- Spring 框架, 主要解决对象的创建问题, IOC  AOP
+         lazy-init = True: 懒加载,使用时才会被创建
+         scope="prototype": 多例模式
+    -->
+    <!-- dataSource: 替换JdbcUtil -->
+    <bean id="ds" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="com.mysql.jdbc.Driver" />
+        <property name="user" value="root" />
+        <property name="password" value="root" />
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/demo" />
+    </bean>
+    <!-- JdbcTemplate 封装了操作数据的CURD,它取代BaseDao  -->
+    <bean id="jt"  class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="ds" />
+    </bean>
+    <!-- JDBCTemplate默认的事务是自动提交,改为手动提交 -->
+    <bean id="productDao" class="cn.canway.dao.impl.ProductDaoImpl">
+        <property name="jdbcTemplate" ref="jt" />
+    </bean>
 
 </beans>
