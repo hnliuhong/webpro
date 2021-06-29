@@ -1,5 +1,7 @@
 package cn.canway.model;
 
+import org.apache.ibatis.type.Alias;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -51,6 +53,7 @@ public class Product {
 		this.id = id;
 	}
 	public String getName() {
+		System.out.println("getName");
 		return name;
 	}
 	public void setName(String name) {

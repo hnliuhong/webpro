@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- xsd + dtd 可以对xml进行约束 -->
+<configuration>
+    <typeAliases>
+        <!--
+        <typeAlias type="cn.canway.model.Product" alias="product" />
+        -->
+        <!-- 支持包扫描机制,默认扫描所有Class文件,并且别名是类的简单名称且第一个字母小写 -->
+        <package name="cn.canway.model"/>
+    </typeAliases>
+    <!-- 配置数据源,支持多个数据库的配置,但是必须指定缺省配置 -->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/demo"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!-- sql映射文件: 所有与sql语句相关的配置都保存在此处(定义缓存、关系映射) -->
+    <!-- 此sql映射文件本质就是DaoImpl,因此后续所有的DaoImpl都删除,用此XML取代 -->
+    <mappers>
+        <mapper resource="cn/canway/dao/impl/ProductDaoImpl.xml"/>
+    </mappers>
+</configuration>
