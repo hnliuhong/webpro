@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace: 避免不同模块后续id的重名 -->
+<!-- 在与Spring整合时,可以删除DaoImpl, 只需要保证:
+    1： Dao接口全民与namespace相同
+    2： Dao接口中定义的方法与id相同
+    3: 可以根据Dao接口采用Proxy生成动态代理类
+     -->
+<mapper namespace="cn.canway.dao.impl.ProductDao">
+    <!-- insert、delete、update 只需要指定参数,无需指定返回值(返回肯定int类型) -->
+    <insert id="save" parameterType="product">
+        insert into product (name,price,remark) values (#{name},#{price},#{remark})
+    </insert>
+    <update id="update" parameterType="product">
+        update product set name=#{name},price=#{price},remark=#{remark} where id = #{id}
+    </update>
+    <delete id="delete" parameterType="int">
+        delete from product where id = #{id}
+    </delete>
+    <!-- 如果只有一个参数,则名称随意 -->
+    <select id="getById" parameterType="int" resultType="product">
+        select * from product where id = #{abc}
+    </select>
+<!--    # start = (page - 1) * size-->
+<!--    select * from product where name like '%%' limit 0,5;-->
+    <!-- resultType: 配置的是list里面返回的类型 -->
+    <select id="queryByName" parameterType="map" resultType="product">
+        select * from product where name like #{keyword} limit #{start},#{size}
+    </select>
+</mapper>

@@ -21,17 +21,9 @@ http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
         <property name="password" value="root" />
         <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/demo" />
     </bean>
-    <!-- JdbcTemplate 封装了操作数据的CURD,它取代BaseDao  -->
-    <bean id="jt"  class="org.springframework.jdbc.core.JdbcTemplate">
-        <property name="dataSource" ref="ds" />
-    </bean>
-    <!-- JDBCTemplate默认的事务是自动提交,改为手动提交 -->
-    <bean id="pd" class="cn.canway.dao.impl.ProductDaoImpl">
-        <property name="jdbcTemplate" ref="jt" />
-    </bean>
 
     <bean id="ps" class="cn.canway.service.impl.ProductServiceImpl">
-        <property name="productDaoImpl" ref="pd" />
+        <property name="productDao" ref="productDao" />
     </bean>
 
     <!-- 配置声明式事务: 事务本质来源于Connection,因此需要事务管理器,并且依赖Connection -->
@@ -57,5 +49,22 @@ http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
     </aop:config>
 
 
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:mybatis-config.xml" />
+        <property name="dataSource" ref="ds" />
+    </bean>
+    <!-- 通过接口 + Mapper映射文件动态创建代理类(ProductDaoImpl)
+         此方式如果dao很多则会配置多次,因此也可以使用扫描方法
+    <bean id="pd" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+        <property name="mapperInterface" value="cn.canway.dao.impl.ProductDao" />
+    </bean>
+    -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 扫描指定包的接口, 然后去找与接口同名的namespace对应的xml文件
+             此方式取代上面的动态代理类生成,一次可以生成多个代理类,默认代理类名称就是简单名称且第一个字母小写
+        -->
+        <property name="basePackage" value="cn.canway.dao.impl" />
+    </bean>
 
 </beans>

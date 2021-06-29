@@ -14,5 +14,5 @@ public interface ProductService {
 
     Product getById(int id);
 
-    List<Product> queryByName(String keyword);
+    List<Product> queryByName(String keyword,int page,int size);
 }

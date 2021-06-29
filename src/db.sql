@@ -17,5 +17,5 @@ create table product
 insert into product (name,price,remark) values ('圣得西服',3000.00,'这里是简单介绍');
 insert into product (name,price,remark) values ('衫衫西服',3000.00,'这里是简单介绍');
 insert into product (name,price,remark) values ('Iphone6',6000.00,'这里是简单介绍');
-
-select * from product;
+# start = (page - 1) * size
+select * from product where name like '%%' limit 0,5;
