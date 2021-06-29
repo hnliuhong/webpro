@@ -7,6 +7,7 @@ import java.util.List;
 
 import cn.canway.dao.impl.ProductDaoImpl;
 import cn.canway.model.Product;
+import cn.canway.service.ProductService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 // 代理对象和目标对象(被代理对象), 实现相同的接口
@@ -20,25 +21,22 @@ public class ProductServiceImpl implements cn.canway.service.ProductService {
 
 	public static void main(String[] args) {
 		// 获取spring-bean.xml配置文件,默认加载配置文件时所有的Bean对象都会先自动创建
-		ApplicationContext context = new ClassPathXmlApplicationContext("spring-bean.xml");
+		ApplicationContext context = new ClassPathXmlApplicationContext("spring-*.xml");
 		// 从spring中获取PorducDaoImpl
-		ProductServiceImpl serviceImpl = context.getBean("ps",ProductServiceImpl.class);
-		Product p = new Product(null,"AOP",new BigDecimal(300),"我是备注");
-		serviceImpl.save(p);
-		for (Product product:serviceImpl.queryByName("")){
+		ProductService productService = context.getBean("ps", ProductService.class);
+		for (Product product:productService.queryByName("")){
 			System.out.println(product);
 		}
+		Product p = new Product(null,"AOP",new BigDecimal(300),"我是备注");
+		productService.save(p);
+//
 	}
 
 	@Override
 	public int save(Product product) {
-//		Connection con = 对象;
-		Date date = new Date();
-		// 手动开启事务......
-//		return productDaoImpl.save(product);
-		System.out.println("完成核心业务逻辑.......");
-		// 手动提交事务......
-		return 0;
+		System.out.println("save.................");
+//		Integer.parseInt("xxxxxxx");
+		return productDaoImpl.save(product);
 	}
 
 	@Override
@@ -53,8 +51,7 @@ public class ProductServiceImpl implements cn.canway.service.ProductService {
 
 	@Override
 	public Product getById(int id) {
-		System.out.println("查询核心业务");
-		return null;
+		return productDaoImpl.getById(id);
 	}
 
 	@Override
