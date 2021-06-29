@@ -28,7 +28,6 @@ public class ProductDaoImpl{
 	public int save(Product product) {
 		String sql = "insert into product (name,price,remark) values (?,?,?)";
 		int num = jdbcTemplate.update(sql,new Object[]{product.getName(),product.getPrice(),product.getRemark()});
-//		Integer.parseInt("xxxxx");
 		return num;
 	}
 
@@ -53,17 +52,4 @@ public class ProductDaoImpl{
 		String sql = "select * from product where name like ?";
 		return jdbcTemplate.query(sql,new BeanPropertyRowMapper<Product>(Product.class),"%" + keyword+"%");
 	}
-
-	public static void main(String[] args) {
-		// 获取spring-bean.xml配置文件,默认加载配置文件时所有的Bean对象都会先自动创建
-		ApplicationContext context = new ClassPathXmlApplicationContext("spring-bean.xml");
-		// 从spring中获取PorducDaoImpl
-		ProductDaoImpl daoImpl = context.getBean("productDao",ProductDaoImpl.class);
-		Product p = new Product(null,"xxx",new BigDecimal(300),"我是备注");
-		daoImpl.save(p);
-		for (Product product:daoImpl.queryByName("")){
-			System.out.println(product);
-		}
-	}
-
 }

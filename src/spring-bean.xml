@@ -20,8 +20,12 @@ http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
         <property name="dataSource" ref="ds" />
     </bean>
     <!-- JDBCTemplate默认的事务是自动提交,改为手动提交 -->
-    <bean id="productDao" class="cn.canway.dao.impl.ProductDaoImpl">
+    <bean id="pd" class="cn.canway.dao.impl.ProductDaoImpl">
         <property name="jdbcTemplate" ref="jt" />
+    </bean>
+
+    <bean id="ps" class="cn.canway.service.impl.ProductServiceImpl">
+        <property name="productDaoImpl" ref="pd" />
     </bean>
 
 </beans>
