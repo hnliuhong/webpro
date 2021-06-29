@@ -2,11 +2,14 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="
 http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 http://www.springframework.org/schema/aop
-http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
     <!-- Spring 框架, 主要解决对象的创建问题, IOC  AOP
          lazy-init = True: 懒加载,使用时才会被创建
          scope="prototype": 多例模式
@@ -30,5 +33,29 @@ http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
     <bean id="ps" class="cn.canway.service.impl.ProductServiceImpl">
         <property name="productDaoImpl" ref="pd" />
     </bean>
+
+    <!-- 配置声明式事务: 事务本质来源于Connection,因此需要事务管理器,并且依赖Connection -->
+    <bean id="tm" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="ds" />
+    </bean>
+
+    <tx:advice id="ad" transaction-manager="tm" >
+        <!-- 配置通知: 本质就是在需要事务的地方动态切入事务 -->
+        <tx:attributes>
+            <tx:method name="save*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="delete*" propagation="REQUIRED"/>
+            <tx:method name="*" propagation="NEVER"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <!-- 配置切面表达式 -->
+        <aop:pointcut id="pt" expression="execution(* cn.canway.service.*.*(..))" />
+        <!-- 二合一则就能提供精确的切入表达式 -->
+        <aop:advisor advice-ref="ad" pointcut-ref="pt" />
+    </aop:config>
+
+
 
 </beans>

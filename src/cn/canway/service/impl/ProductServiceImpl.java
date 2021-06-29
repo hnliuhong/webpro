@@ -24,10 +24,10 @@ public class ProductServiceImpl implements cn.canway.service.ProductService {
 		ApplicationContext context = new ClassPathXmlApplicationContext("spring-*.xml");
 		// 从spring中获取PorducDaoImpl
 		ProductService productService = context.getBean("ps", ProductService.class);
-		for (Product product:productService.queryByName("")){
-			System.out.println(product);
-		}
-		Product p = new Product(null,"AOP",new BigDecimal(300),"我是备注");
+//		for (Product product:productService.queryByName("")){
+//			System.out.println(product);
+//		}
+		Product p = new Product(null,"AOP~~",new BigDecimal(300),"我是备注");
 		productService.save(p);
 //
 	}
