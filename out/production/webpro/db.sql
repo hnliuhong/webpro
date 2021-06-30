@@ -19,3 +19,5 @@ insert into product (name,price,remark) values ('衫衫西服',3000.00,'这里�
 insert into product (name,price,remark) values ('Iphone6',6000.00,'这里是简单介绍');
 # start = (page - 1) * size
 select * from product where name like '%%' limit 0,5;
+
+delete from product where 1=1;

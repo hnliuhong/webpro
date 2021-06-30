@@ -15,6 +15,10 @@ public class ProductServiceImpl implements cn.canway.service.ProductService {
 	// 直接通过JVM来创建和管理对象有三个缺点: 数量、类型、时间
 	private ProductDao productDao = null;
 
+	public ProductServiceImpl(){
+		System.out.println("ProductServiceImpl()....................");
+	}
+
 	public void setProductDao(ProductDao productDao) {
 		this.productDao = productDao;
 	}
